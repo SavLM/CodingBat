@@ -291,4 +291,192 @@ public class Warmups {
         }
         return current;
     }
+
+    // 32. Given a string and a non-negative int n, return a larger string that is n copies of the original string.
+    public String stringTimes(String str, int n) {
+        String ret = "";
+        for(int i=0; i<n; i++){
+            ret += str;
+        }
+        return ret;
+    }
+
+    // 33. Given a string and a non-negative int n, we'll say that the front of the string is the first 3 chars, or whatever is there if the string is less than length 3. Return n copies of the front;
+    public static String frontTimes(String str, int n) {
+        String ret = "";
+        String temp = "";
+        for(int i=0; i<str.length() && i<3; i++){
+            temp = temp + "" +str.charAt(i);
+        }
+        for(int j=0; j<n; j++){
+            ret += temp;
+        }
+        return ret;
+    }
+
+    // 34. Count the number of "xx" in the given string. We'll say that overlapping is allowed, so "xxx" contains 2 "xx".
+    int countXX(String str) {
+        int count = 0;
+        if(str.length()<2){
+            return 0;
+        }
+        for(int i=1; i<str.length(); i++){
+            if(str.substring(i-1,i+1).equals("xx")){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // 35. Given a string, return true if the first instance of "x" in the string is immediately followed by another "x".
+    boolean doubleX(String str) {
+        if(str.length()<2){
+            return false;
+        }
+        for(int i=1; i<str.length(); i++){
+            if(str.charAt(i-1)=='x'){
+                if(str.substring(i-1,i+1).equals("xx")){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    // 36. Given a string, return a new string made of every other char starting with the first, so "Hello" yields "Hlo".
+    public String stringBits(String str) {
+        if(str.length()<1){return "";}
+        String current = "" + str.charAt(0);
+        for(int i=1; i < str.length(); i++){
+            if(i%2==0){
+                current+=str.charAt(i);
+            }
+        }
+        return current;
+    }
+
+    // 37. Given a non-empty string like "Code" return a string like "CCoCodCode".
+    public String stringSplosion(String str) {
+        if(str.length()<1){return "";}
+        String ret = "";
+        int incr = 0;
+        for(int i=0; i<str.length(); i++){
+            String currentstr = "";
+            for(int j=0; j<incr+1; j++){
+                currentstr+=str.charAt(j);
+            }
+            ret += currentstr;
+            incr++;
+        }
+        return ret;
+    }
+
+    // 38. Given a string, return the count of the number of times that a substring length 2 appears in the string and also as the last 2 chars of the string, so "hixxxhi" yields 1 (we won't count the end substring).
+    public int last2(String str) {
+        if(str.length()<2){ return 0;}
+        else{
+            int count = 0;
+            String end = str.substring(str.length()-2, str.length());
+            for(int i=0; i<str.length()-2; i++){
+                if(str.substring(i,i+2).equals(end)){
+                    count++;
+                }
+            }
+            return count;
+        }
+    }
+
+    // 39. Given an array of ints, return the number of 9's in the array.
+    public int arrayCount9(int[] nums) {
+        int count = 0;
+        for(int a : nums){
+            if(a == 9){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // 40. Given an array of ints, return true if one of the first 4 elements in the array is a 9. The array length may be less than 4.
+    public boolean arrayFront9(int[] nums) {
+        for(int i = 0; i<nums.length && i<4; i++){
+            if(nums[i]==9){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 41. Given an array of ints, return true if the sequence of numbers 1, 2, 3 appears in the array somewhere.
+    public boolean array123(int[] nums) {
+        int memorya = 0;
+        int memoryb = 0;
+
+        for(int i : nums){
+            if(i == 1){
+                memorya = 1;
+            }
+            else if(memorya == 1 && i==2){
+                memoryb = 1;
+            }
+            else if(memorya == 1 && memoryb == 1 && i==3){
+                return true;
+            }
+            else{
+                memorya = 0;
+                memoryb = 0;
+            }
+        }
+        return false;
+    }
+
+    // 42. Given 2 strings, a and b, return the number of the positions where they contain the same length 2 substring. So "xxcaazz" and "xxbaaz" yields 3, since the "xx", "aa", and "az" substrings appear in the same place in both strings.
+    public int stringMatch(String a, String b) {
+        int count = 0;
+        for(int i=0; i<a.length()-1 && i<b.length()-1; i++){
+            if(a.substring(i,i+2).equals(b.substring(i,i+2))){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // 43. Given a string, return a version where all the "x" have been removed. Except an "x" at the very start or end should not be removed.
+    public String stringX(String str) {
+        if(str.length()<2){return str;}
+        String snew = ""+str.charAt(0);
+        for(int i=1; i<str.length()-1; i++){
+            if(str.charAt(i)!='x'){
+                snew += str.charAt(i);
+            }
+        }
+        snew+=str.charAt(str.length()-1);
+        return snew;
+    }
+
+    // 44. Given a string, return a string made of the chars at indexes 0,1, 4,5, 8,9 ... so "kittens" yields "kien".
+    public String altPairs(String str) {
+        //+1, +3...
+        int alt = 1;
+        String ret = "";
+        for(int i=0; i<str.length(); i++){
+            ret += str.charAt(i);
+            if(alt == 0){
+                i+=2;
+                alt = 1;
+            }
+            else if(alt == 1){
+                alt = 0;
+            }
+        }
+        return ret;
+    }
+
+    // 45. Suppose the string "yak" is unlucky. Given a string, return a version where all the "yak" are removed, but the "a" can be any char. The "yak" strings will not overlap.
+
+
+
 }

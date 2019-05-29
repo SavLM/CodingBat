@@ -3,6 +3,6 @@ package com.savannahmclaurin;
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
+	System.out.println(Warmups.frontTimes("hello", 3));
     }
 }
