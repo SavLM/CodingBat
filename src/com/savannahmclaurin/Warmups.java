@@ -476,7 +476,117 @@ public class Warmups {
     }
 
     // 45. Suppose the string "yak" is unlucky. Given a string, return a version where all the "yak" are removed, but the "a" can be any char. The "yak" strings will not overlap.
+    public String stringYak(String str) {
+        if(str.length()<3){
+            return str;
+        }
+        String ret = "";
+        int sec = 0;
+        int thi = 0;
+        for(int i =0; i<str.length(); i++){
+            if(i< str.length()-2 && str.substring(i,i+3).equals("yak")){
+                sec = 1;
+                thi = 0;
+            }
+            else if(sec == 1){
+                sec = 0;
+                thi = 1;
+            }
+            else if(thi == 1){
+                thi = 0;
+            }
+            else{
+                ret+= str.charAt(i);
+            }
+        }
+        return ret;
+    }
 
+    // 46. Given an array of ints, return the number of times that two 6's are next to each other in the array. Also count instances where the second "6" is actually a 7.
+    public int array667(int[] nums) {
+        int count=0;
+        for(int i=0; i<nums.length-1; i++){
+            if((nums[i]==6 && nums[i+1]==7) || (nums[i]==6 && nums[i+1]==6)){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // 47. Given an array of ints, we'll say that a triple is a value appearing 3 times in a row in the array. Return true if the array does not contain any triples.
+    public boolean noTriples(int[] nums) {
+        int mem = 0;
+        int a = 0;
+        for(int i=0; i<nums.length; i++){
+            if(a==0){
+                mem=nums[i];
+                a=1;
+            }
+            else if(a==1 && nums[i]==mem){
+                a=2;
+            }
+            else if(a==2 && nums[i]==mem){
+                return false;
+            }
+            else{
+                mem=nums[i];
+                a=1;
+            }
+        }
+        return true;
+    }
+
+    // 48. Given an array of ints, return true if it contains a 2, 7, 1 pattern: a value, followed by the value plus 5, followed by the value minus 1. Additionally the 271 counts even if the "1" differs by 2 or less from the correct value.
+    public boolean has271(int[] nums) {
+        int mem = 0;
+        int a = 0;
+        for(int i=0; i<nums.length; i++){
+            if(a==0){
+                mem=nums[i];
+                a=1;
+            }
+            else if(a==1 && nums[i]==mem+5){
+                a=2;
+            }
+            else if(a==2 && (nums[i]<=mem+1 && nums[i]>=mem-3)){
+                return true;
+            }
+            else{
+                mem=nums[i];
+                a=1;
+            }
+        }
+        return false;
+    }
+
+
+
+
+
+
+    public static boolean triplesinarray(int[] nums) {
+        int[][] mem = new int[nums.length][2];
+        for(int i=0; i<mem.length ; i++){
+            mem[i][0] = -1;
+            mem[i][1] = -1;
+        }
+        for(int a : nums){
+            for(int j=0; j<nums.length; j++){
+                if(mem[j][0]==a){
+                    mem[j][1]++;
+                    if(mem[j][1]==3){
+                        return true;
+                    }
+                    break;
+                }
+                else if(mem[j][0] == -1 && mem[j][1] == -1){
+                    mem[j][0]=a;
+                    mem[j][1]=1;
+                }
+            }
+        }
+        return false;
+    }
 
 
 }
