@@ -334,7 +334,7 @@ public class StringExercises {
         return s;
     }
 
-    
+
 
 
 }
