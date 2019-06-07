@@ -334,6 +334,477 @@ public class StringExercises {
         return s;
     }
 
+    // 32. Given a string, return a string where for every char in the original, there are two chars.
+    public String doubleChar(String str) {
+        String ret = "";
+        for(int i=0; i<str.length(); i++){
+            ret+=""+str.charAt(i)+str.charAt(i);
+        }
+        return ret;
+    }
+
+    // 33. Return the number of times that the string "hi" appears anywhere in the given string.
+    public int countHi(String str) {
+        int count = 0;
+        for(int i=0; i<str.length()-1; i++){
+            if(str.substring(i,i+2).equals("hi")){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // 35. Return true if the string "cat" and "dog" appear the same number of times in the given string.
+    public boolean catDog(String str) {
+        int catcount = 0;
+        int dogcount = 0;
+        for(int i=0; i<str.length()-2; i++){
+            if(str.substring(i,i+3).equals("cat")){
+                catcount++;
+            }
+            else if(str.substring(i,i+3).equals("dog")){
+                dogcount++;
+            }
+        }
+        return catcount == dogcount;
+    }
+
+    // 36. Return the number of times that the string "code" appears anywhere in the given string, except we'll accept any letter for the 'd', so "cope" and "cooe" count.
+    public int countCode(String str) {
+        int count = 0;
+        for(int i=0; i<str.length()-3; i++){
+            if(str.substring(i,i+2).equals("co") && str.charAt(i+3)=='e'){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // 37. Given two strings, return true if either of the strings appears at the very end of the other string, ignoring upper/lower case differences (in other words, the computation should not be "case sensitive"). Note: str.toLowerCase() returns the lowercase version of a string.
+    public boolean endOther(String a, String b) {
+        if(a.length()<=b.length()){
+            return b.substring(b.length()-a.length(), b.length()).toLowerCase().equals(a.toLowerCase());
+        }
+        return a.substring(a.length()-b.length(), a.length()).toLowerCase().equals(b.toLowerCase());
+    }
+
+    // 38. Return true if the given string contains an appearance of "xyz" where the xyz is not directly preceeded by a period (.). So "xxyz" counts but "x.xyz" does not.
+    public boolean xyzThere(String str) {
+        if (str.length() > 2 && str.substring(0, 3).equals("xyz")) {
+            return true;
+        }
+        for (int i = 0; i < str.length() - 3; i++) {
+            if (str.charAt(i) != '.' && str.substring(i + 1, i + 4).equals("xyz")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 39. Return true if the given string contains a "bob" string, but where the middle 'o' char can be any char.
+    public boolean bobThere(String str) {
+        for(int i=0; i<str.length()-2; i++){
+            if(str.charAt(i)=='b' && str.charAt(i+2)=='b'){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 40. We'll say that a String is xy-balanced if for all the 'x' chars in the string, there exists a 'y' char somewhere later in the string. So "xxy" is balanced, but "xyx" is not. One 'y' can balance multiple 'x's. Return true if the given string is xy-balanced.
+    public boolean xyBalance(String str) {
+        int x=0;
+        int y=0;
+        for(int i=0; i<str.length(); i++){
+            if(str.charAt(i)=='x'){
+                x=1;
+                y=0;
+            }
+            else if(str.charAt(i)=='y'){
+                y=1;
+            }
+        }
+        return y==1 || x==0;
+    }
+
+    // 41. Given two strings, a and b, create a bigger string made of the first char of a, the first char of b, the second char of a, the second char of b, and so on. Any leftover chars go at the end of the result.
+    public String mixString(String a, String b) {
+        String ret = "";
+        int al = a.length();
+        int bl = b.length();
+        for(int i=0; i<al||i<bl;i++){
+            if(i<al){
+                ret+=a.charAt(i);
+            }
+            if(i<bl){
+                ret+=b.charAt(i);
+            }
+        }
+        return ret;
+    }
+
+    // 42. Given a string and an int n, return a string made of n repetitions of the last n characters of the string. You may assume that n is between 0 and the length of the string, inclusive.
+    public String repeatEnd(String str, int n) {
+        String ret = "";
+        for(int i=0; i<n*n; i++){
+            ret+=str.charAt(str.length()-n+(i%n));
+        }
+        return ret;
+    }
+
+    // 43. Given a string and an int n, return a string made of the first n characters of the string, followed by the first n-1 characters of the string, and so on. You may assume that n is between 0 and the length of the string, inclusive (i.e. n >= 0 and n <= str.length()).
+    public String repeatFront(String str, int n) {
+        String ret = "";
+        for(int i=n-1; i>=0; i--){
+            ret+=str.substring(0,(i%n)+1);
+        }
+        return ret;
+    }
+
+    // 44. Given two strings, word and a separator sep, return a big string made of count occurrences of the word, separated by the separator string.
+    public String repeatSeparator(String word, String sep, int count) {
+        String ret = "";
+        for(int i=0; i<count; i++){
+            ret+=word+sep;
+        }
+        return ret.substring(0,ret.length()-sep.length());
+    }
+
+    // 45. Given a string, consider the prefix string made of the first N chars of the string. Does that prefix string appear somewhere else in the string? Assume that the string is not empty and that N is in the range 1..str.length().
+    public boolean prefixAgain(String str, int n) {
+        String prefix = str.substring(0,n);
+        for (int i = n; i <= str.length()-n; i++) {
+            if (str.substring(i,i+n).equals(prefix)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 46. Given a string, does "xyz" appear in the middle of the string? To define middle, we'll say that the number of chars to the left and right of the "xyz" must differ by at most one. This problem is harder than it looks.
+    public boolean xyzMiddle(String str) {
+        int middleS = (str.length()/2)-2;
+        int middleE = (str.length()/2);
+        if(str.length()%2 != 0){
+            middleS = (int)(Math.floor(str.length()/2.0))-1;
+            middleE = (int)(Math.floor(str.length()/2.0));
+        }
+        for (int i = middleS; i>=0 && i+2 <str.length() && i< middleE ; i++) {
+            if (str.substring(i, i+3).equals("xyz")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 47. A sandwich is two pieces of bread with something in between. Return the string that is between the first and last appearance of "bread" in the given string, or return the empty string "" if there are not two pieces of brea
+    public String getSandwich(String str) {
+        String checkBread = "     ";
+        boolean wasBread = false;
+        boolean secondBread = false;
+        String temp = "";
+        String ret = "";
+        for(int i=0; i<str.length(); i++){
+            checkBread=checkBread.substring(1,5)+str.charAt(i);
+            if(checkBread.equals("bread")){
+                if(wasBread){
+                    secondBread=true;
+                    ret+=temp;
+                    temp="";
+                }else{
+                    wasBread=true;
+                }
+            }
+            if(wasBread){
+                temp+=str.charAt(i);
+            }
+        }
+        if(secondBread){
+            return ret.substring(1,ret.length()-4);
+        }
+        return "";
+    }
+
+    // 48. Returns true if for every '*' (star) in the string, if there are chars both immediately before and after the star, they are the same.
+    public boolean sameStarChar(String str) {
+        for(int i=1; i+1 < str.length(); i++){
+            if(str.charAt(i)=='*' && str.charAt(i-1)!=str.charAt(i+1)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 49. Given a string, compute a new string by moving the first char to come after the next two chars, so "abc" yields "bca". Repeat this process for each subsequent group of 3 chars, so "abcdef" yields "bcaefd". Ignore any group of fewer than 3 chars at the end.
+    public String oneTwo(String str) {
+        String ret = "";
+        int iter = str.length()-(str.length()%3);
+        for(int i= 0; i<iter; i+=3){
+            ret+=""+str.charAt(i+1)+str.charAt(i+2)+str.charAt(i);
+        }
+        return ret;
+    }
+
+    // 50. Look for patterns like "zip" and "zap" in the string -- length-3, starting with 'z' and ending with 'p'. Return a string where for all such words, the middle letter is gone, so "zipXzap" yields "zpXzp".
+    public String zipZap(String str) {
+        String ret = "";
+        if(str.length()!=0){
+            ret+=str.charAt(0);
+        }
+        for(int i=1 ; i<str.length(); i++){
+            if((i+1==str.length()) || ((i+1 < str.length()) && (str.charAt(i-1)!='z' || str.charAt(i+1)!='p') )){
+                ret+=str.charAt(i);
+            }
+        }
+        return ret;
+    }
+
+    // 51. Return a version of the given string, where for every star (*) in the string the star and the chars immediately to its left and right are gone. So "ab*cd" yields "ad" and "ab**cd" also yields "ad".
+    public String starOut(String str) {
+        String ret = "";
+        boolean wasStar = false;
+        for(int i=0 ; i<str.length(); i++){
+            if(str.charAt(i)=='*'){
+                if(i-1>=0 && ret.length()>0 && !wasStar){
+                    ret = ret.substring(0,ret.length()-1);
+                }
+                wasStar=true;
+            }
+            else if(str.charAt(i)!='*' && !wasStar){
+                ret+=str.charAt(i);
+            }
+            else{
+                wasStar = false;
+            }
+        }
+        return ret;
+    }
+
+    // 52. Given a string and a non-empty word string, return a version of the original String where all chars have been replaced by pluses ("+"), except for appearances of the word string which are preserved unchanged.
+    public String plusOut(String str, String word) {
+        String ret = "";
+        for(int i = 0 ; i<str.length(); i++){
+            if(i+word.length()-1<str.length() && str.substring(i,i+word.length()).equals(word)){
+                ret+=word;
+                i+=word.length()-1;
+            }
+            else{
+                ret+='+';
+            }
+        }
+        return ret;
+    }
+
+    // 53. Given a string and a non-empty word string, return a string made of each char just before and just after every appearance of the word in the string. Ignore cases where there is no char before or after the word, and a char may be included twice if it is between two words.
+    public String wordEnds(String str, String word) {
+        String ret = "";
+        for(int i = 0 ; i<str.length(); i++){
+            if(i+word.length()-1<str.length() && str.substring(i,i+word.length()).equals(word)){
+                if(i-1>-1){
+                    ret+=str.charAt(i-1);
+                }
+                if(i+word.length()<str.length()){
+                    ret+=str.charAt(i+word.length());
+                }
+                i+=word.length()-1;
+            }
+        }
+        return ret;
+    }
+
+    // 54. Given a string, count the number of words ending in 'y' or 'z' -- so the 'y' in "heavy" and the 'z' in "fez" count, but not the 'y' in "yellow" (not case sensitive). We'll say that a y or z is at the end of a word if there is not an alphabetic letter immediately following it. (Note: Character.isLetter(char) tests if a char is an alphabetic letter.)
+    public int countYZ(String str) {
+        int count = 0;
+        for(int i = 0 ; i<=str.length(); i++){
+            if(i-1>-1 && ( i==str.length() || !Character.isLetter(str.charAt(i))) && (Character.toLowerCase(str.charAt(i-1))=='z' || Character.toLowerCase(str.charAt(i-1))=='y')){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // 55. Given two strings, base and remove, return a version of the base string where all instances of the remove string have been removed (not case sensitive). You may assume that the remove string is length 1 or more. Remove only non-overlapping instances, so with "xxx" removing "xx" leaves "x".
+    public String withoutString(String base, String remove) {
+        String ret = "";
+        for(int i = 0 ; i<base.length(); i++){
+            if(i+remove.length()-1<base.length() && base.substring(i,i+remove.length()).toLowerCase().equals(remove.toLowerCase())){
+                i+=remove.length()-1;
+            }
+            else{
+                ret+=base.charAt(i);
+            }
+        }
+        return ret;
+    }
+
+    // 56. Given a string, return true if the number of appearances of "is" anywhere in the string is equal to the number of appearances of "not" anywhere in the string (case sensitive).
+    public boolean equalIsNot(String str) {
+        int count = 0;
+        for(int i = 0 ; i<str.length(); i++){
+            if(i+1<str.length() && str.substring(i,i+2).equals("is")){
+                count++;
+            }
+            else if(i+2<str.length() && str.substring(i,i+3).equals("not")){
+                count--;
+            }
+        }
+        return count==0;
+    }
+
+    // 57. We'll say that a lowercase 'g' in a string is "happy" if there is another 'g' immediately to its left or right. Return true if all the g's in the given string are happy.
+    public boolean gHappy(String str) {
+        boolean stillgood = false;
+        for(int i=0 ; i<str.length(); i++){
+            if(str.charAt(i)=='g'){
+                i++;
+                while(i<str.length() && str.charAt(i)=='g'){
+                    stillgood = true;
+                    i++;
+                }
+                if(!stillgood){
+                    return false;
+                }
+                stillgood=false;
+            }
+        }
+        return true;
+    }
+
+    // 58. We'll say that a "triple" in a string is a char appearing three times in a row. Return the number of triples in the given string. The triples may overlap.
+    public int countTriple(String str) {
+        int count = 0;
+        String temp = "";
+        int tempcount = 0;
+        for(int i=0 ; i+2<str.length(); i++){
+            temp = "" + str.charAt(i)+str.charAt(i)+str.charAt(i);
+            if(str.substring(i,i+3).equals(temp)){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // 59. Given a string, return the sum of the digits 0-9 that appear in the string, ignoring all other characters. Return 0 if there are no digits in the string. (Note: Character.isDigit(char) tests if a char is one of the chars '0', '1', .. '9'. Integer.parseInt(string) converts a string to an int.)
+    public int sumDigits(String str) {
+        int sum=0;
+        for(int i=0; i<str.length(); i++){
+            if(Character.isDigit(str.charAt(i))){
+                sum+=Integer.parseInt(""+str.charAt(i));
+            }
+        }
+        return sum;
+    }
+
+    // 60. Given a string, return the longest substring that appears at both the beginning and end of the string without overlapping. For example, sameEnds("abXab") is "ab".
+    public String sameEnds(String str) {
+        if(str.length()==0 || isCopy(str)){
+            return str.substring(0,str.length()/2);
+        }
+        else{
+            int l=str.length();
+            String newS ="";
+            if(l%2==0){
+                newS = str.substring(0, (str.length()/2)-1) + str.substring((str.length()/2)+1,str.length());
+            }
+            else{
+                newS = str.substring(0, (str.length()/2)) + str.substring((str.length()/2)+1,str.length());
+            }
+            return sameEnds(newS);
+        }
+    }
+    public Boolean isCopy(String str){
+        int l=str.length();
+        if(l%2==0){
+            return str.substring(0, str.length()/2).equals(str.substring(str.length()/2,str.length()));
+        }
+        else{
+            return str.substring(0, (str.length()/2)+1).equals(str.substring(str.length()/2,str.length()));
+        }
+    }
+
+    // 61. Given a string, look for a mirror image (backwards) string at both the beginning and end of the given string. In other words, zero or more characters at the very begining of the given string, and at the very end of the string in reverse order (possibly overlapping). For example, the string "abXYZba" has the mirror end "ab".
+    public String mirrorEnds(String str) {
+        if(str.length()==0 || isPalindrome(str)){
+            return str;
+        }
+        else{
+            int l=str.length();
+            String newS =str;
+            while(!isPalindrome(newS)){
+                if(l%2==0){
+                    newS = newS.substring(0, (newS.length()/2)-1) + newS.substring((newS.length()/2)+1,newS.length());
+                }
+                else{
+                    newS = newS.substring(0, (newS.length()/2)) + newS.substring((newS.length()/2)+1,newS.length());
+                }
+            }
+            return newS.substring(0,newS.length()/2);
+        }
+    }
+
+    public Boolean isPalindrome(String str){
+        int l=str.length();
+        String mirror = "";
+        for(int i=str.length()-1; i>-1; i--){
+            mirror += str.charAt(i);
+        }
+        return (str.equals(mirror));
+    }
+
+    // 62. Given a string, return the length of the largest "block" in the string. A block is a run of adjacent chars that are the same.
+    public static int maxBlock(String str) {
+        int count = 0;
+        String temps = "";
+        for(int i=0 ; str.length()>0 && i <str.length()+1; i++){
+            if(i<str.length() && temps.length()>0 && str.charAt(i)==temps.charAt(0)){
+                temps+=str.charAt(i);
+            }
+            else if(i<str.length()) {
+                temps = "" + str.charAt(i);
+            }
+            if(temps.length()>=count){
+                count = temps.length();
+            }
+        }
+        return count;
+    }
+
+    // 63. Given a string, return the sum of the numbers appearing in the string, ignoring all other characters. A number is a series of 1 or more digit chars in a row. (Note: Character.isDigit(char) tests if a char is one of the chars '0', '1', .. '9'. Integer.parseInt(string) converts a string to an int.)
+    public int sumNumbers(String str) {
+        int sum = 0;
+        boolean newint = false;
+        String temp = "";
+        for(int i = 0; i<str.length(); i++){
+            while(i<str.length() && Character.isDigit(str.charAt(i))){
+                newint = true;
+                temp += str.charAt(i);
+                i++;
+            }
+            if(newint){
+                sum+=Integer.parseInt(temp);
+                newint = false;
+                temp= "";
+            }
+        }
+        return sum;
+    }
+
+    // 64. Given a string, return a string where every appearance of the lowercase word "is" has been replaced with "is not". The word "is" should not be immediately preceeded or followed by a letter -- so for example the "is" in "this" does not count.
+    public String notReplace(String str) {
+        boolean waschar = false;
+        String ret = "";
+        for(int i = 0; i<str.length() ; i++){
+            if(i+1<str.length() && str.substring(i,i+2).equals("is") && !waschar && (i+3>str.length() || !Character.isLetter(str.charAt(i+2))) ){
+                ret+="is not";
+                i++;
+            }
+            else{
+                ret += str.charAt(i);
+            }
+            waschar = Character.isLetter(str.charAt(i));
+        }
+        return ret;
+    }
 
 
 
