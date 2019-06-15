@@ -424,7 +424,241 @@ public class ArrayExercises {
         return ret;
     }
 
-    // 39. 
+    // 39. Given an array of ints, return true if it contains no 1's or it contains no 4's.
+    public boolean no14(int[] nums) {
+        boolean was1 = false;
+        boolean was4 = false;
+        for(int i : nums){
+            if(i == 1){
+                was1 = true;
+                if(was4){
+                    return false;
+                }
+            }
+            if(i == 4){
+                was4 = true;
+                if(was1){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
+    // 40. We'll say that a value is "everywhere" in an array if for every pair of adjacent elements in the array, at least one of the pair is that value. Return true if the given value is everywhere in the array.
+    public boolean isEverywhere(int[] nums, int val) {
+        for(int i=0; i+1<nums.length; i++){
+            if(nums[i]!=val && nums[i+1]!=val){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    // 41. Given an array of ints, return true if the array contains a 2 next to a 2 or a 4 next to a 4, but not both.
+    public boolean either24(int[] nums) {
+        boolean was4 = false;
+        boolean was2 = false;
+        for(int i=0; i+1<nums.length; i++){
+            if(nums[i]==2 && nums[i+1]==2){
+                if(was4){
+                    return false;
+                }
+                was2 = true;
+            }
+            if(nums[i]==4 && nums[i+1]==4){
+                if(was2){
+                    return false;
+                }
+                was4 = true;
+            }
+        }
+        return was2^was4;
+    }
+
+    // 42. Given arrays nums1 and nums2 of the same length, for every element in nums1, consider the corresponding element in nums2 (at the same index). Return the count of the number of times that the two elements differ by 2 or less, but are not equal.
+    public int matchUp(int[] nums1, int[] nums2) {
+        int count = 0;
+        for(int i=0; i<nums1.length; i++){
+            if(Math.abs(nums1[i]-nums2[i])>0 && Math.abs(nums1[i]-nums2[i])<3){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // 43. Given an array of ints, return true if the array contains two 7's next to each other, or there are two 7's separated by one element, such as with {7, 1, 7}.
+    public boolean has77(int[] nums) {
+        for(int i=0; i+2<nums.length; i++){
+            if(nums[i]==7 && nums[i+1]==7 || nums[i]==7 && nums[i+2]==7 || nums[i+1]==7 && nums[i+2]==7){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 44. Given an array of ints, return true if there is a 1 in the array with a 2 somewhere later in the array.
+    public boolean has12(int[] nums) {
+        boolean was1 = false;
+        for(int i: nums){
+            if(i==1){
+                was1 = true;
+            }
+            else if(was1 && i==2){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 45. Given an array of ints, return true if the array contains either 3 even or 3 odd values all next to each other.
+    public boolean modThree(int[] nums) {
+        for(int i=0; i+2<nums.length; i++){
+            if(nums[i]%2==0 && nums[i+1]%2==0 && nums[i+2]%2==0){
+                return true;
+            }
+            else if(nums[i]%2!=0 && nums[i+1]%2!=0 && nums[i+2]%2!=0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 46. Given an array of ints, return true if the value 3 appears in the array exactly 3 times, and no 3's are next to each other.
+    public boolean haveThree(int[] nums) {
+        int count3 = 0;
+        for(int i=0; i+1<nums.length; i++){
+            if((nums[i]==3 && nums[i+1]==3) || count3>3){
+                return false;
+            }
+            else if(nums[i]==3){
+                count3++;
+            }
+        }
+        if(nums.length>0 && nums[nums.length-1]==3){
+            count3++;
+        }
+        return count3==3;
+    }
+
+    // 47. Given an array of ints, return true if every 2 that appears in the array is next to another 2.
+    public boolean twoTwo(int[] nums) {
+        boolean was2 = false;
+        for(int i=0; i+1<nums.length; i++){
+            if((nums[i]==2 && (nums[i+1]!=2 && !was2))){
+                return false;
+            }
+            else if(nums[i]==2 && nums[i+1]==2){
+                was2 = true;
+            }
+            else{
+                was2 = false;
+            }
+        }
+        if(nums.length>1 && nums[nums.length-2]!=2 && nums[nums.length-1]==2){
+            return false;
+        }
+        else if((nums.length==1 && nums[0]==2)){
+            return false;
+        }
+        return true;
+    }
+
+    // 48. Return true if the group of N numbers at the start and end of the array are the same. For example, with {5, 6, 45, 99, 13, 5, 6}, the ends are the same for n=0 and n=2, and false for n=1 and n=3. You may assume that n is in the range 0..nums.length inclusive.
+    public boolean sameEnds(int[] nums, int len) {
+        for(int i = 0 ; i < len ; i++){
+            if(nums[i]!=nums[nums.length-len+i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 49. Return true if the array contains, somewhere, three increasing adjacent numbers like .... 4, 5, 6, ... or 23, 24, 25.
+    public boolean tripleUp(int[] nums) {
+        for(int i=0; i+2<nums.length; i++){
+            if(nums[i+1]==nums[i]+1 && nums[i+2]==nums[i]+2){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 50. Given start and end numbers, return a new array containing the sequence of integers from start up to but not including end, so start=5 and end=10 yields {5, 6, 7, 8, 9}. The end number will be greater or equal to the start number. Note that a length-0 array is valid.
+    public int[] fizzArray3(int start, int end) {
+        int[] ret = new int[end-start];
+        for(int i=0; i<end-start; i++){
+            ret[i] = start+i;
+        }
+        return ret;
+    }
+
+    // 51. Return an array that is "left shifted" by one -- so {6, 2, 5, 3} returns {2, 5, 3, 6}. You may modify and return the given array, or return a new array.
+    public int[] shiftLeft(int[] nums) {
+        int start = 0;
+        for(int i=0; i<nums.length; i++){
+            if(i==0){
+                start=nums[0];
+            }
+            if(i+1<nums.length){
+                nums[i]=nums[i+1];
+            }
+            else{
+                nums[nums.length-1]=start;
+            }
+        }
+        return nums;
+    }
+
+    // 52. For each multiple of 10 in the given array, change all the values following it to be that multiple of 10, until encountering another multiple of 10. So {2, 10, 3, 4, 20, 5} yields {2, 10, 10, 10, 20, 20}.
+    public int[] tenRun(int[] nums) {
+        boolean start=false;
+        int sub = 0;
+        for(int i=0; i<nums.length; i++){
+            if(nums[i]%10==0){
+                start=true;
+                sub = nums[i];
+            }
+            else if(start){
+                nums[i]=sub;
+            }
+        }
+        return nums;
+    }
+
+    // 53. Given a non-empty array of ints, return a new array containing the elements from the original array that come before the first 4 in the original array. The original array will contain at least one 4. Note that it is valid in java to create an array of length 0.
+    public int[] pre4(int[] nums) {
+        int count = 0;
+        for(int i : nums){
+            if(i==4){
+                break;
+            }
+            count++;
+        }
+        int[] ret =  new int[count];
+        for(int j=0; j<count; j++){
+            ret[j] = nums[j];
+        }
+        return ret;
+    }
+
+    // 54. Given a non-empty array of ints, return a new array containing the elements from the original array that come after the last 4 in the original array. The original array will contain at least one 4. Note that it is valid in java to create an array of length 0.
+    public int[] post4(int[] nums) {
+        int count = 0;
+        for(int i = nums.length-1 ; i>=0 ; i--){
+            if(nums[i]==4){
+                break;
+            }
+            count++;
+        }
+        int[] ret =  new int[count];
+        for(int j=0; j<count; j++){
+            ret[j] = nums[nums.length-count+j];
+        }
+        return ret;
+    }
+
+    // 55. We'll say that an element in an array is "alone" if there are values before and after it, and those values are different from it. Return a version of the given array where every instance of the given value which is alone is replaced by whichever value to its left or right is larger.
 
 }
