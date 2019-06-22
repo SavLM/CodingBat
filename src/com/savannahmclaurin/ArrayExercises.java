@@ -660,5 +660,282 @@ public class ArrayExercises {
     }
 
     // 55. We'll say that an element in an array is "alone" if there are values before and after it, and those values are different from it. Return a version of the given array where every instance of the given value which is alone is replaced by whichever value to its left or right is larger.
+    public int[] notAlone(int[] nums, int val) {
+        int[] ret = nums;
+        for(int i=0; i+2<nums.length; i++){
+            if(nums[i+1]==val && nums[i]!=val && nums[i+2]!=val){
+                ret[i] = ret[i];
+                ret[i+1]=larger(nums[i],nums[i+2]);
+                ret[i+2]=ret[i+2];
+            }
+        }
+        return ret;
+    }
+
+    public int larger(int a, int b){
+        if(a>b){
+            return a;
+        }
+        return b;
+    }
+
+    // 56. Return an array that contains the exact same numbers as the given array, but rearranged so that all the zeros are grouped at the start of the array. The order of the non-zero numbers does not matter. So {1, 0, 0, 1} becomes {0 ,0, 1, 1}. You may modify and return the given array or make a new array.
+    public int[] zeroFront(int[] nums) {
+        int[] ret = new int[nums.length];
+        int endc = nums.length-1;
+        for(int i = nums.length-1 ; i >= 0 ; i--){
+            if(nums[i]!=0){
+                ret[endc]=nums[i];
+                endc--;
+            }
+        }
+        return ret;
+    }
+
+    // 57. Return a version of the given array where all the 10's have been removed. The remaining elements should shift left towards the start of the array as needed, and the empty spaces a the end of the array should be 0. So {1, 10, 10, 2} yields {1, 2, 0, 0}. You may modify and return the given array or make a new array.
+    public int[] withoutTen(int[] nums) {
+        int[] ret = new int[nums.length];
+        int begc = 0;
+        for(int i = 0 ; i < nums.length ; i++){
+            if(nums[i]!=10){
+                ret[begc]=nums[i];
+                begc++;
+            }
+        }
+        return ret;
+    }
+
+    // 58. Return a version of the given array where each zero value in the array is replaced by the largest odd value to the right of the zero in the array. If there is no odd value to the right of the zero, leave the zero as a zero.
+    public int[] zeroMax(int[] nums) {
+        int oddnum = 0;
+        for(int i=nums.length-1 ; i>=0 ; i--){
+            if(nums[i]==0){
+                nums[i]=oddnum;
+            }
+            else if(nums[i]%2!=0 && nums[i]>oddnum){
+                oddnum=nums[i];
+            }
+        }
+        return nums;
+    }
+
+    // 59. Return an array that contains the exact same numbers as the given array, but rearranged so that all the even numbers come before all the odd numbers. Other than that, the numbers can be in any order. You may modify and return the given array, or make a new array.
+    public int[] evenOdd(int[] nums) {
+        int[] ret = new int[nums.length];
+        int endc = nums.length-1;
+        int begc = 0;
+        for(int i = 0 ; i < nums.length ; i++){
+            if(nums[i]%2==0){
+                ret[begc]=nums[i];
+                begc++;
+            }
+            else{
+                ret[endc]=nums[i];
+                endc--;
+            }
+        }
+        return ret;
+    }
+
+    // 60. Consider the series of numbers beginning at start and running up to but not including end, so for example start=1 and end=5 gives the series 1, 2, 3, 4. Return a new String[] array containing the string form of these numbers, except for multiples of 3, use "Fizz" instead of the number, for multiples of 5 use "Buzz", and for multiples of both 3 and 5 use "FizzBuzz". In Java, String.valueOf(xxx) will make the String form of an int or other type. This version is a little more complicated than the usual version since you have to allocate and index into an array instead of just printing, and we vary the start/end instead of just always doing 1..100.
+    public String[] fizzBuzz(int start, int end) {
+        String[] ret = new String[end-start];
+        for(int i=start ; i<end ; i++){
+            if(i%3==0){
+                if(i%5==0){
+                    ret[i-start] = "FizzBuzz";
+                }
+                else{
+                    ret[i-start] = "Fizz";
+                }
+            }
+            else if(i%5==0){
+                ret[i-start] = "Buzz";
+            }
+            else{
+                ret[i-start] = String.valueOf(i);
+            }
+        }
+        return ret;
+    }
+
+    // 61. Consider the leftmost and righmost appearances of some value in an array. We'll say that the "span" is the number of elements between the two inclusive. A single value has a span of 1. Returns the largest span found in the given array. (Efficiency is not a priority.)
+    public int maxSpan(int[] nums) {
+        int count=0;
+        for(int i = 0; i<nums.length ; i++){
+            for(int j = nums.length-1; j>=i ; j--){
+                if(nums[i]==nums[j]){
+                    if(j-i+1>count){
+                        count=j-i+1;
+                    }
+                    break;
+                }
+            }
+        }
+        return count;
+    }
+
+    // 62. Return an array that contains exactly the same numbers as the given array, but rearranged so that every 3 is immediately followed by a 4. Do not move the 3's, but every other number may move. The array contains the same number of 3's and 4's, every 3 has a number after it that is not a 3, and a 3 appears in the array before any 4.
+    public int[] fix34(int[] nums) {
+        boolean done = false;
+        int temp = 0;
+        for(int i=0; i<nums.length-1; i++){
+            if(nums[i]==3 && nums[i+1]!=4){
+                for(int j=0; j<nums.length; j++){
+                    if(((j>0 && nums[j-1]!=3) || j==0) && nums[j]==4){
+                        nums[j]=nums[i+1];
+                        nums[i+1]=4;
+                    }
+                }
+            }
+        }
+        return nums;
+    }
+
+    // 63. Return an array that contains exactly the same numbers as the given array, but rearranged so that every 4 is immediately followed by a 5. Do not move the 4's, but every other number may move. The array contains the same number of 4's and 5's, and every 4 has a number after it that is not a 4. In this version, 5's may appear anywhere in the original array.
+    public int[] fix45(int[] nums) {
+        boolean done = false;
+        int temp = 0;
+        for(int i=0; i<nums.length-1; i++){
+            if(nums[i]==4 && nums[i+1]!=5){
+                for(int j=0; j<nums.length; j++){
+                    if(((j>0 && nums[j-1]!=4) || j==0) && nums[j]==5){
+                        nums[j]=nums[i+1];
+                        nums[i+1]=5;
+                    }
+                }
+            }
+        }
+        return nums;
+    }
+
+    // 64. Given a non-empty array, return true if there is a place to split the array so that the sum of the numbers on one side is equal to the sum of the numbers on the other side.
+    public boolean canBalance(int[] nums) {
+        int l = nums.length;
+        int li = 0;
+        int ri = l-1;
+        int lsum = 0;
+        int rsum = 0;
+        boolean done = false;
+        while(li<=ri){
+            if(lsum>rsum && nums[ri]>=0){
+                rsum+=nums[ri];
+                ri--;
+            }
+            else{
+                lsum+=nums[li];
+                li++;
+            }
+        }
+        return lsum==rsum;
+    }
+
+    // 65. Given two arrays of ints sorted in increasing order, outer and inner, return true if all of the numbers in inner appear in outer. The best solution makes only a single "linear" pass of both arrays, taking advantage of the fact that both arrays are already in sorted order.
+    public boolean linearIn(int[] outer, int[] inner) {
+        int i = 0;
+        for(int out : outer){
+            if(i>=inner.length){
+                return true;
+            }
+            else if(inner[i]==out){
+                i++;
+            }
+            else if(inner[i]<out){
+                return false;
+            }
+        }
+        return i>=inner.length;
+    }
+
+    // 66. Given n>=0, create an array length n*n with the following pattern, shown here for n=3 : {0, 0, 1,    0, 2, 1,    3, 2, 1} (spaces added to show the 3 groups).
+    public int[] squareUp(int n) {
+        int[] ret = new int[n*n];
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                if(j<=i){
+                    ret[(n*i)+n-j-1]=j+1;
+                }
+            }
+        }
+        return ret;
+    }
+
+    // 67. Given n>=0, create an array with the pattern {1,    1, 2,    1, 2, 3,   ... 1, 2, 3 .. n} (spaces added to show the grouping). Note that the length of the array will be 1 + 2 + 3 ... + n, which is known to sum to exactly n*(n + 1)/2.
+    public int[] seriesUp(int n) {
+        int sum = 0;
+        int[] ret = new int[n*(n+1)/2];
+        for(int i=0; i<n; i++){
+            sum=0;
+            for(int j=0; j<=2*i; j++){
+                if(j<i){
+                    sum+=j+1;
+                }
+                else{
+                    ret[sum+j-i]=j-i+1;
+                }
+
+            }
+        }
+        return ret;
+    }
+
+    // 68. We'll say that a "mirror" section in an array is a group of contiguous elements such that somewhere in the array, the same group appears in reverse order. For example, the largest mirror section in {1, 2, 3, 8, 9, 3, 2, 1} is length 3 (the {1, 2, 3} part). Return the size of the largest mirror section found in the given array.
+    public int maxMirror(int[] nums) {
+        int ret = 0;
+        int li = 0;
+        int ri = nums.length-1;
+        int i = 0;
+        int sum = 0;
+        while(li<nums.length){
+            sum=0;
+            ri=nums.length-1;
+            i=0;
+            while(ri>=0 && li+i<nums.length){
+                if(nums[li+i]==nums[ri]){
+                    sum++;
+                    i++;
+                }
+                else{
+                    sum=0;
+                }
+                if(sum>ret){
+                    ret = sum;
+                }
+                ri--;
+            }
+            li++;
+        }
+        return ret;
+    }
+
+    // 69. Say that a "clump" in an array is a series of 2 or more adjacent elements of the same value. Return the number of clumps in the given array.
+    public int countClumps(int[] nums) {
+        int sum = 0;
+        int temp;
+        boolean clump = false;
+        if(nums.length>2){
+            temp = nums[0];
+        }
+        else{
+            return 0;
+        }
+        for(int i=1; i<=nums.length; i++){
+            if(i<nums.length && temp == nums[i]){
+                clump=true;
+            }
+            else{
+                if(clump){
+                    sum++;
+                }
+                if(i<nums.length){
+                    temp = nums[i];
+                }
+                clump = false;
+            }
+        }
+        return sum;
+    }
+
+    
 
 }
