@@ -226,16 +226,7 @@ public class RecursionExercises {
         return false;
     }
 
-    // 28. Given a string, return true if it is a nesting of zero or more pairs of parenthesis, like "(())" or "((()))". Suggestion: check the first and last chars, and then recur on what's inside them.
-    public boolean nestParen(String str) {
-        if(str.length()<=0) return true;
-        if(str.charAt(0)=='(' && str.charAt(str.length()-1)==')'){
-            return nestParen(str.substring(1, str.length()-1));
-        }
-        return false;
-    }
-
-    // 29. Given a string and a non-empty substring sub, compute recursively the number of times that sub appears in the string, without the sub strings overlapping.
+    // 28. Given a string and a non-empty substring sub, compute recursively the number of times that sub appears in the string, without the sub strings overlapping.
     public int strCount(String str, String sub) {
         int l = sub.length();
         int s = str.length();
@@ -244,7 +235,7 @@ public class RecursionExercises {
         return strCount(str.substring(1,s), sub);
     }
 
-    // 30. Given a string and a non-empty substring sub, compute recursively if at least n copies of sub appear in the string somewhere, possibly with overlapping. N will be non-negative.
+    // 29. Given a string and a non-empty substring sub, compute recursively if at least n copies of sub appear in the string somewhere, possibly with overlapping. N will be non-negative.
     public boolean strCopies(String str, String sub, int n) {
         int l = sub.length();
         int s = str.length();
@@ -253,7 +244,7 @@ public class RecursionExercises {
         return strCopies(str.substring(1,s), sub, n);
     }
 
-    // 31. Given a string and a non-empty substring sub, compute recursively the largest substring which starts and ends with sub and return its length.
+    // 30. Given a string and a non-empty substring sub, compute recursively the largest substring which starts and ends with sub and return its length.
     public int strDist(String str, String sub) {
         int sl = sub.length();
         int stl = str.length();
@@ -265,9 +256,112 @@ public class RecursionExercises {
         return strDist(str.substring(1,stl), sub);
     }
 
-    // 32. Given an array of ints, is it possible to choose a group of some of the ints, such that the group sums to the given target? This is a classic backtracking recursion problem. Once you understand the recursive backtracking strategy in this problem, you can use the same pattern for many problems to search a space of choices. Rather than looking at the whole array, our convention is to consider the part of the array starting at index start and continuing to the end of the array. The caller can specify the whole array simply by passing start as 0. No loops are needed -- the recursive calls progress down the array.
+    // 31. Given an array of ints, is it possible to choose a group of some of the ints, such that the group sums to the given target? This is a classic backtracking recursion problem. Once you understand the recursive backtracking strategy in this problem, you can use the same pattern for many problems to search a space of choices. Rather than looking at the whole array, our convention is to consider the part of the array starting at index start and continuing to the end of the array. The caller can specify the whole array simply by passing start as 0. No loops are needed -- the recursive calls progress down the array.
+    public boolean groupSum(int start, int[] nums, int target) {
+        if(start>=nums.length) return target==0;
+        if(nums[start]<=target){
+            if(groupSum(start+1, nums, target-nums[start])) return true;
+        }
+        return groupSum(start+1, nums, target);
+    }
 
 
+    // 32. Given an array of ints, is it possible to choose a group of some of the ints, beginning at the start index, such that the group sums to the given target? However, with the additional constraint that all 6's must be chosen. (No loops needed.)
+    public boolean groupSum6(int start, int[] nums, int target) {
+        if(start<nums.length && nums[start]==6) return groupSum6(start+1, nums, target-nums[start]);
+        if(start>=nums.length) return target==0;
+        if(nums[start]<=target){
+            if(groupSum6(start+1, nums, target-nums[start])) return true;
+        }
+        return groupSum6(start+1, nums, target);
+    }
+
+    // 33. Given an array of ints, is it possible to choose a group of some of the ints, such that the group sums to the given target with this additional constraint: If a value in the array is chosen to be in the group, the value immediately following it in the array must not be chosen. (No loops needed.)
+    public boolean groupNoAdj(int start, int[] nums, int target) {
+        if(start>=nums.length) return target==0;
+        if(nums[start]<=target){
+            if(groupNoAdj(start+2, nums, target-nums[start])) return true;
+        }
+        return groupNoAdj(start+1, nums, target);
+    }
+
+    // 34. Given an array of ints, is it possible to choose a group of some of the ints, such that the group sums to the given target with these additional constraints: all multiples of 5 in the array must be included in the group. If the value immediately following a multiple of 5 is 1, it must not be chosen. (No loops needed.)
+    public boolean groupSum5(int start, int[] nums, int target) {
+        if(start<nums.length && nums[start]%5==0){
+            if(start+1<nums.length && nums[start+1]==1){
+                return groupSum5(start+2, nums, target-nums[start]);
+            }
+            return groupSum5(start+1, nums, target-nums[start]);
+        }
+        if(start>=nums.length) return target==0;
+        if(nums[start]<=target){
+            if(groupSum5(start+1, nums, target-nums[start])) return true;
+        }
+        return groupSum5(start+1, nums, target);
+    }
+
+    // 35. Given an array of ints, is it possible to choose a group of some of the ints, such that the group sums to the given target, with this additional constraint: if there are numbers in the array that are adjacent and the identical value, they must either all be chosen, or none of them chosen. For example, with the array {1, 2, 2, 2, 5, 2}, either all three 2's in the middle must be chosen or not, all as a group. (one loop can be used to find the extent of the identical values).
+    public boolean groupSumClump(int start, int[] nums, int target) {
+        if(start<nums.length){
+            int tempi=nums[start];
+            int tempt=target-tempi;
+            int i=0;
+            for(i = start+1; i<nums.length; i++){
+                if(nums[i]==tempi){
+                    tempt-=tempi;
+                }
+                else{
+                    break;
+                }
+            }
+            if(i>start+1){
+                if(groupSumClump(i, nums, tempt)) return true;
+                return groupSumClump(i, nums, target);
+            }
+        }
+        if(start>=nums.length) return target==0;
+        if(nums[start]<=target){
+            if(groupSumClump(start+1, nums, target-nums[start])) return true;
+        }
+        return groupSumClump(start+1, nums, target);
+    }
+
+    // 36. Given an array of ints, is it possible to divide the ints into two groups, so that the sums of the two groups are the same. Every int must be in one group or the other. Write a recursive helper method that takes whatever arguments you like, and make the initial call to your recursive helper from splitArray(). (No loops needed.)
+    public boolean splitArray(int[] nums) {
+        return groupEm(0, nums, 0, 0);
+    }
+
+    public boolean groupEm(int start, int[] nums, int a1, int a2) {
+        if(start>=nums.length) return a1==a2;
+        if(a1<=a2){
+            if(groupEm(start+1, nums, a1+nums[start],a2)) return true;
+        }
+        return groupEm(start+1, nums, a1,a2+nums[start]);
+    }
+
+    // 37. Given an array of ints, is it possible to divide the ints into two groups, so that the sum of one group is a multiple of 10, and the sum of the other group is odd. Every int must be in one group or the other. Write a recursive helper method that takes whatever arguments you like, and make the initial call to your recursive helper from splitOdd10(). (No loops needed.)
+    public boolean splitOdd10(int[] nums) {
+        return groupEm2(0, nums, 0, 0);
+    }
+
+    public boolean groupEm2(int start, int[] nums, int g10, int go) {
+        if(start>=nums.length) return (g10%10==0) && (go%2!=0);
+        if(groupEm2(start+1, nums, g10+nums[start],go)) return true;
+        return groupEm2(start+1, nums, g10,go+nums[start]);
+    }
+
+    // 38. Given an array of ints, is it possible to divide the ints into two groups, so that the sum of the two groups is the same, with these constraints: all the values that are multiple of 5 must be in one group, and all the values that are a multiple of 3 (and not a multiple of 5) must be in the other. (No loops needed.)
+    public boolean split53(int[] nums) {
+        return groupEm3(0, nums, 0, 0);
+    }
+
+    public boolean groupEm3(int start, int[] nums, int g5, int g3) {
+        if(start>=nums.length) return g3==g5;
+        if(nums[start]%5==0) return groupEm3(start+1, nums, g5+nums[start],g3);
+        if(nums[start]%3==0) return groupEm3(start+1, nums, g5,g3+nums[start]);
+        if(groupEm3(start+1, nums, g5+nums[start],g3)) return true;
+        return groupEm3(start+1, nums, g5,g3+nums[start]);
+    }
 
 
 
